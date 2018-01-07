@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% import "_macro.html" as macro %}
+
+{% block title %}
+    爱情保卫战
+{% endblock %}
+
+{% block page_content %}
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <div class="row clearfix">
+                    {% for video in videos %}
+                        <div class="col-md-3 column">
+                            <div class="row clearfix">
+                                <div class="col-md-6 column">
+                                    <img src="{{ video.img_url }}"
+                                         width="124" height="70"/>
+                                </div>
+                                <div class="col-md-6 column" style="margin-left: -15px;">
+                                    <div class="row clearfix">
+                                        <div class="col-md-12 column">
+                                            <a href="{{ video.url }}" title="{{ video.full_title }}" target="_blank"
+                                               style="text-decoration: none;">
+                                                <strong>{{ video.title }}</strong>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row clearfix">
+                                        <div class="col-md-8 column" style="margin-top: 5px;">
+                                            {{ video.total_views }}
+                                        </div>
+                                        <div class="col-md-4 column" style="margin-top: 5px;">
+                                            <a href="#" type="button" class="btn btn-primary btn-xs">标记</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% if loop.index % 4 == 0 %}
+                            <HR align=center width=1100 color=#987cb9 SIZE=1>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if pagination %}
+        <div class="pagination pull-right" style="margin-right: 98px;">
+            {{ macro.pagination_widget(pagination, 'main.videos') }}
+        </div>
+    {% endif %}
+{% endblock %}
