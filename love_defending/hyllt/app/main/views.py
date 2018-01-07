@@ -8,7 +8,7 @@ author @heyao
 import sys
 
 import math
-from flask import render_template
+from flask import render_template, flash, redirect, url_for
 
 from . import main
 from .. import mongodb
@@ -48,4 +48,16 @@ def videos(page=1):
     pagination.add_arg('iter_pages', get_info)
     pagination.add_arg('has_next', (total_items / pagesize) > page)
     pagination.add_arg('pages', pages)
-    return render_template('index.html', videos=videos, pagination=pagination)
+    return render_template('index.html', videos=videos, pagination=pagination, page=page)
+
+
+@main.route('/video/mark/<video_id>/<page>/<status>')
+def video_mark(video_id, page, status=1):
+    status = int(status)
+    if status != 0 and status != 1:
+        flash("失败")
+    mongodb.db['video_list'].update(
+        {'_id': video_id},
+        {'$set': {'read_status': 1}}
+    )
+    return redirect(url_for('main.videos', page=page))

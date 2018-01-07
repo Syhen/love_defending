@@ -14,8 +14,10 @@
                         <div class="col-md-3 column">
                             <div class="row clearfix">
                                 <div class="col-md-6 column">
-                                    <img src="{{ video.img_url }}"
-                                         width="124" height="70"/>
+                                    <a href="{{ video.url }}" title="{{ video.full_title }}" target="_blank"
+                                       style="text-decoration: none;">
+                                        <img src="{{ video.img_url }}" width="124" height="70"/>
+                                    </a>
                                 </div>
                                 <div class="col-md-6 column" style="margin-left: -15px;">
                                     <div class="row clearfix">
@@ -31,7 +33,8 @@
                                             {{ video.total_views }}
                                         </div>
                                         <div class="col-md-4 column" style="margin-top: 5px;">
-                                            <a href="#" type="button" class="btn btn-primary btn-xs">标记</a>
+                                            <a href="{{ url_for('main.video_mark', video_id=video.id, page=page, status=1) }}"
+                                               type="button" class="btn btn-primary btn-xs">标记</a>
                                         </div>
                                     </div>
                                 </div>
