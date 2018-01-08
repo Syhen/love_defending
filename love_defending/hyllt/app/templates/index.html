@@ -17,6 +17,9 @@
                                     <a href="{{ video.url }}" title="{{ video.full_title }}" target="_blank"
                                        style="text-decoration: none;">
                                         <img src="{{ video.img_url }}" width="124" height="70"/>
+                                        <div class="images-content">
+                                            &nbsp;时间：{{ video.duration }}
+                                        </div>
                                     </a>
                                 </div>
                                 <div class="col-md-6 column" style="margin-left: -15px;">
@@ -48,6 +51,21 @@
             </div>
         </div>
     </div>
+    <style>
+        .images-content {
+            margin-left: 15px;
+            position: absolute;
+            z-index: 1;
+            left: 0;
+            bottom: 0;
+            width: 85%;
+            color: #fff;
+            background: rgba(0, 0, 0, .7);
+            height: 20px;
+            line-height: 20px;
+            overflow: hidden;
+        }
+    </style>
     {% if pagination %}
         <div class="pagination pull-right" style="margin-right: 98px;">
             {{ macro.pagination_widget(pagination, 'main.videos') }}
