@@ -89,5 +89,7 @@ class VideoListSpider(Spider):
     def parse_seconds(self, response):
         item = response.meta['item']
         item['seconds'] = int(response.xpath('//li[@class="list_item current"]/@tl').extract()[0])
-        item['duration'] = response.xpath('//span[@class="num"]/text()').extract()[0]
+        m, s = divmod(item['seconds'], 60)
+        h, m = divmod(m, 60)
+        item['duration'] = ("%02d:%02d:%02d" % (h, m, s))
         yield item
