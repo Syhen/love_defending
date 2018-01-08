@@ -79,4 +79,15 @@ class VideoListSpider(Spider):
             item['total_views'] = self.str2num(i['thirdLine'])
             item['url'] = i['playUrl']
             item['date'] = datetime.datetime.strptime(title[0], '%Y-%m-%d')
-            yield item
+            yield Request(
+                item['url'],
+                meta={'item': item},
+                callback=self.parse_seconds,
+                dont_filter=True
+            )
+
+    def parse_seconds(self, response):
+        item = response.meta['item']
+        item['seconds'] = int(response.xpath('//li[@class="list_item current"]/@tl').extract()[0])
+        item['duration'] = response.xpath('//span[@class="num"]/text()').extract()[0]
+        yield item

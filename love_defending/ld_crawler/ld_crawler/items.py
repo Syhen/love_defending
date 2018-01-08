@@ -17,3 +17,5 @@ class VideoListItem(scrapy.Item):
     date = scrapy.Field()
     date_str = scrapy.Field()
     updated_at = scrapy.Field()
+    seconds = scrapy.Field()
+    duration = scrapy.Field()
