@@ -29,3 +29,8 @@ ITEM_PIPELINES = {
 MONGO_URI = 'mongodb://localhost:27017'
 DB_NAME = 'love_defending'
 AUTH = {}
+
+try:
+   from local_settings import *
+except ImportError:
+   pass
