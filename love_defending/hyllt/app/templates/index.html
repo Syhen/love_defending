@@ -2,73 +2,72 @@
 {% import "_macro.html" as macro %}
 
 {% block title %}
-    爱情保卫战
+    一起看片
 {% endblock %}
 
 {% block page_content %}
     <div class="container">
-        <div class="row clearfix">
+    <div class="row clearfix">
+        <div class="bd">
             <div class="col-md-12 column">
                 <div class="row clearfix">
-                    {% for video in videos %}
-                        <div class="col-md-3 column">
+                    <div class="col-md-2 column">
+                        <a href="{{ url_for('main.videos', page=1) }}" style="text-decoration: none;">
+                            <img class="folder" src="http://puui.qpic.cn/vcolumn_vt_pic/0/m2yiyo1515246375/0"
+                                 width="165"
+                                 height="231"/>
+                        </a>
+                    </div>
+                    <div class="col-md-3 column" style="margin-left: -30px;">
+                        <div class="row clearfix">
+                            <div class="col-md-12 column" style="margin-top: 0px;">
+                                <h4><a href="{{ url_for('main.videos', page=1) }}"
+                                       style="text-decoration: none;">爱情保卫战</a></h4>
+                            </div>
                             <div class="row clearfix">
-                                <div class="col-md-6 column">
-                                    <a href="{{ video.url }}" title="{{ video.full_title }}" target="_blank"
-                                       style="text-decoration: none;">
-                                        <img src="{{ video.img_url }}" width="124" height="70"/>
-                                        <div class="images-content">
-                                            &nbsp;{{ video.duration }}
-                                        </div>
-                                    </a>
+                                <div class="col-md-12 column" style="margin-top: 5px;">
+                                    主持人： 赵川
                                 </div>
-                                <div class="col-md-6 column" style="margin-left: -15px;">
-                                    <div class="row clearfix">
-                                        <div class="col-md-12 column">
-                                            <a href="{{ video.url }}" title="{{ video.full_title }}" target="_blank"
-                                               style="text-decoration: none;">
-                                                <strong>{{ video.title }}</strong>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="row clearfix">
-                                        <div class="col-md-8 column" style="margin-top: 5px;">
-                                            {{ video.total_views }}
-                                        </div>
-                                        <div class="col-md-4 column" style="margin-top: 5px;">
-                                            <a href="{{ url_for('main.video_mark', video_id=video.id, page=page, status=1) }}"
-                                               type="button" class="btn btn-primary btn-xs">标记</a>
-                                        </div>
-                                    </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-md-12 column" style="margin-top: 5px;">
+                                    地　区: 内地
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-md-12 column" style="margin-top: 5px;">
+                                    电视台: 天津卫视
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-md-12 column" style="margin-top: 5px;">
+                                    语　言: 普通话
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-md-12 column" style="margin-top: 5px;">
+                                    首播时间: 2011-06-18
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-md-12 column" style="margin-top: 5px;">
+                                    简　介： 天津卫视新推出的“后婚恋时代”情感综艺新版块节目。
                                 </div>
                             </div>
                         </div>
-                        {% if loop.index % 4 == 0 %}
-                            <HR align=center width=1100 color=#987cb9 SIZE=1>
-                        {% endif %}
-                    {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <style>
-        .images-content {
-            margin-left: 15px;
-            position: absolute;
-            z-index: 1;
-            left: 0;
-            bottom: 0;
-            width: 85%;
-            color: #fff;
-            background: rgba(0, 0, 0, .7);
-            height: 20px;
-            line-height: 20px;
-            overflow: hidden;
+        .row {
+            margin-top: 2px;
+            margin-left: 0px;
+        }
+
+        .folder {
+            box-shadow: 0 1px 6px rgba(0, 0, 0, .35);
         }
     </style>
-    {% if pagination %}
-        <div class="pagination pull-right" style="margin-right: 98px;">
-            {{ macro.pagination_widget(pagination, 'main.videos') }}
-        </div>
-    {% endif %}
 {% endblock %}
