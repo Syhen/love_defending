@@ -48,7 +48,7 @@ def videos(page=1):
     pagination.add_arg('iter_pages', get_info)
     pagination.add_arg('has_next', (total_items / pagesize) > page)
     pagination.add_arg('pages', pages)
-    return render_template('index.html', videos=videos, pagination=pagination, page=page)
+    return render_template('love_defending.html', videos=videos, pagination=pagination, page=page)
 
 
 @main.route('/video/mark/<video_id>/<page>/<status>')
@@ -61,3 +61,8 @@ def video_mark(video_id, page, status=1):
         {'$set': {'read_status': 1}}
     )
     return redirect(url_for('main.videos', page=page))
+
+
+@main.route('/')
+def index():
+    return render_template('index.html')
