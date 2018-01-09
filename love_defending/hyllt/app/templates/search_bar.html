@@ -20,8 +20,13 @@
 </div>
 <script>
     function search_text(text) {
-        var url = '{{ url_for('main.search_video', page=1, keyword="") }}';
-        window.location.href = url.replace('//', '/' + text + '/');
+        if (text === "") {
+            window.location.href = '{{ url_for('main.videos', page=1) }}'
+        }
+        else {
+            var url = '{{ url_for('main.search_video', page=1, keyword="") }}';
+            window.location.href = url.replace('//', '/' + text + '/');
+        }
     }
 
     $("#hm-search").click(
