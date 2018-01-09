@@ -19,3 +19,4 @@ class VideoListItem(scrapy.Item):
     updated_at = scrapy.Field()
     seconds = scrapy.Field()
     duration = scrapy.Field()
+    views_per_day = scrapy.Field()

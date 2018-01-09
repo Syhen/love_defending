@@ -5,7 +5,9 @@ import time
 import datetime
 from urllib import urlencode
 
+import pymongo
 from scrapy import Spider, Request
+from scrapy.conf import settings
 
 from ld_crawler.items import VideoListItem
 
@@ -60,6 +62,15 @@ class VideoListSpider(Spider):
 
     def start_requests(self):
         urls = self.generate_date_list()
+        mongo_uri = settings.get("MONGO_URI")
+        db_name = settings.get("DB_NAME")
+        auth = settings.get("AUTH")
+        client = pymongo.MongoClient(mongo_uri)
+        db = client[db_name]
+        if auth:
+            db.authenticate(**auth)
+        data = db['video_list'].find({}, {'_id': 1})
+        self.video_ids = set(i['_id'] for i in data)
         for url in urls:
             yield Request(
                 url,
@@ -79,12 +90,16 @@ class VideoListSpider(Spider):
             item['total_views'] = self.str2num(i['thirdLine'])
             item['url'] = i['playUrl']
             item['date'] = datetime.datetime.strptime(title[0], '%Y-%m-%d')
-            yield Request(
-                item['url'],
-                meta={'item': item},
-                callback=self.parse_seconds,
-                dont_filter=True
-            )
+            item['views_per_day'] = int(item['total_views'] * 1. / (datetime.datetime.now() - item['date']).days + 1)
+            if item['id'] not in self.video_ids:
+                yield Request(
+                    item['url'],
+                    meta={'item': item},
+                    callback=self.parse_seconds,
+                    dont_filter=True
+                )
+            else:
+                yield item
 
     def parse_seconds(self, response):
         item = response.meta['item']
