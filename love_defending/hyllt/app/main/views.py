@@ -22,11 +22,7 @@ class Pagination(object):
         setattr(self, name, value)
 
 
-@main.route('/video/<page>')
-def videos(page=1):
-    page = int(page)
-    pagesize = 20
-    videos = mongodb.db['video_list'].find().sort([('read_status', 1), ('total_views', -1)])
+def generate_video_list(videos, page, pagesize=20):
     total_items = videos.count()
     videos_info = videos.skip((page - 1) * pagesize).limit(pagesize)
     videos = []
@@ -48,6 +44,15 @@ def videos(page=1):
     pagination.add_arg('iter_pages', get_info)
     pagination.add_arg('has_next', (total_items / pagesize) > page)
     pagination.add_arg('pages', pages)
+    return pagination, videos
+
+
+@main.route('/video/<page>')
+def videos(page=1):
+    page = int(page)
+    pagesize = 20
+    videos = mongodb.db['video_list'].find().sort([('read_status', 1), ('total_views', -1)])
+    pagination, videos = generate_video_list(videos, page, pagesize)
     return render_template('love_defending.html', videos=videos, pagination=pagination, page=page)
 
 
@@ -66,3 +71,12 @@ def video_mark(video_id, page, status=1):
 @main.route('/')
 def index():
     return render_template('index.html')
+
+
+@main.route('/video/<keyword>/<page>')
+def search_video(keyword='', page=1):
+    page = int(page)
+    pagesize = 20
+    videos = mongodb.db['video_list'].find({'title': {'$regex': keyword}}).sort([('read_status', 1), ('total_views', -1)])
+    pagination, videos = generate_video_list(videos, page, pagesize)
+    return render_template('love_defending.html', videos=videos, pagination=pagination, page=page)
