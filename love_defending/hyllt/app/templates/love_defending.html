@@ -22,7 +22,7 @@
                                        style="text-decoration: none;">
                                         <img src="{{ video.img_url }}" width="124" height="70"/>
                                         <div class="images-content">
-                                            &nbsp;{{ video.duration }}
+                                            &nbsp;{{ video.date_str }}
                                         </div>
                                     </a>
                                 </div>
@@ -72,7 +72,7 @@
     </style>
     {% if pagination %}
         <div class="pagination pull-right" style="margin-right: 98px;">
-            {{ macro.pagination_widget(pagination, 'main.videos') }}
+            {{ macro.pagination_widget(pagination, 'main.videos', type=type) }}
         </div>
     {% endif %}
 {% endblock %}

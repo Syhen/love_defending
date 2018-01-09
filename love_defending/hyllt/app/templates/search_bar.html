@@ -1,16 +1,18 @@
 <div class="input" style="width: 80%; margin: 0 auto; ">
     <div class="input-group input-group-lg" style="margin-top: 30px; margin-bottom: 50px;">
-        {#        <div class="input-group-btn">#}
-        {#            <button type="button" id="search-type" class="btn btn-default dropdown-toggle"#}
-        {#                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 120px">#}
-        {#                标题&nbsp;&nbsp;<span class="caret"></span>#}
-        {#            </button>#}
-        {#            <ul class="dropdown-menu">#}
-        {#                <li><a href="javascript:void(0);" id="title">标题</a></li>#}
-        {#                <li role="separator" class="divider"></li>#}
-        {#                <li><a href="javascript:void(0);" id="author">作者</a></li>#}
-        {#            </ul>#}
-        {#        </div>#}
+        <div class="input-group-btn">
+            <button type="button" id="search-type" class="btn btn-default dropdown-toggle"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 120px">
+                总点击&nbsp;&nbsp;<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="javascript:void(0);" id="total">总点击</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="javascript:void(0);" id="day">日均点击</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="javascript:void(0);" id="date">更新时间</a></li>
+            </ul>
+        </div>
 
         <input type="text" id="search-text" class="form-control">
         <span class="input-group-btn">
@@ -19,12 +21,40 @@
     </div>
 </div>
 <script>
-    function search_text(text) {
+    var select_id = "{{ type }}";
+    if(select_id === 'total'){
+        $("#search-type").html('总点击&nbsp;&nbsp;<span class=\"caret\"></span>');
+    }
+    else if(select_id=== 'day'){
+        $("#search-type").html('日均点击&nbsp;&nbsp;<span class=\"caret\"></span>');
+    }
+    else if(select_id === 'date'){
+        $("#search-type").html('更新时间&nbsp;&nbsp;<span class=\"caret\"></span>');
+    }
+    function search_text(type, text) {
         if (text === "") {
-            window.location.href = '{{ url_for('main.videos', page=1) }}'
+            if (type === 'total') {
+                window.location.href = '{{ url_for('main.videos', page=1, type='total') }}'
+            }
+
+            else if (type === 'day') {
+                window.location.href = '{{ url_for('main.videos', page=1, type='day') }}'
+            }
+            else {
+                window.location.href = '{{ url_for('main.videos', page=1, type='date') }}'
+            }
+
         }
         else {
-            var url = '{{ url_for('main.search_video', page=1, keyword="") }}';
+            if (type === 'total') {
+                var url = '{{ url_for('main.search_video', page=1, keyword="", type='total') }}';
+            }
+            else if (type === 'day') {
+                var url = '{{ url_for('main.search_video', page=1, keyword="", type='day') }}';
+            }
+            else {
+                var url = '{{ url_for('main.search_video', page=1, keyword="", type='date') }}';
+            }
             window.location.href = url.replace('//', '/' + text + '/');
         }
     }
@@ -32,7 +62,14 @@
     $("#hm-search").click(
         function () {
             var text = $("#search-text").val();
-            search_text(text);
+            search_text(select_id, text);
+        }
+    );
+
+    $(".dropdown-menu a").click(
+        function () {
+            select_id = $(this).attr("id");
+            $("#search-type").html($(this).html() + '&nbsp;&nbsp;<span class=\"caret\"></span>');
         }
     );
 
