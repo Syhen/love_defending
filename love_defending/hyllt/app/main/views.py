@@ -47,13 +47,18 @@ def generate_video_list(videos, page, pagesize=20):
     return pagination, videos
 
 
-@main.route('/video/<page>')
-def videos(page=1):
+@main.route('/video/<type>/<page>')
+def videos(type='total', page=1):
     page = int(page)
     pagesize = 20
-    videos = mongodb.db['video_list'].find().sort([('read_status', 1), ('total_views', -1)])
+    sort_key = dict(
+        total='total_views',
+        day='views_per_day',
+        date='date'
+    )[type]
+    videos = mongodb.db['video_list'].find().sort([('read_status', 1), (sort_key, -1)])
     pagination, videos = generate_video_list(videos, page, pagesize)
-    return render_template('love_defending.html', videos=videos, pagination=pagination, page=page)
+    return render_template('love_defending.html', videos=videos, pagination=pagination, page=page, type=type)
 
 
 @main.route('/video/mark/<video_id>/<page>/<status>')
@@ -73,10 +78,15 @@ def index():
     return render_template('index.html')
 
 
-@main.route('/video/<keyword>/<page>')
-def search_video(keyword='', page=1):
+@main.route('/video/<type>/<keyword>/<page>')
+def search_video(type='total', keyword='', page=1):
     page = int(page)
     pagesize = 20
-    videos = mongodb.db['video_list'].find({'title': {'$regex': keyword}}).sort([('read_status', 1), ('total_views', -1)])
+    sort_key = dict(
+        total='total_views',
+        day='views_per_day',
+        date='date'
+    )[type]
+    videos = mongodb.db['video_list'].find({'title': {'$regex': keyword}}).sort([('read_status', 1), (sort_key, -1)])
     pagination, videos = generate_video_list(videos, page, pagesize)
-    return render_template('love_defending.html', videos=videos, pagination=pagination, page=page)
+    return render_template('love_defending.html', videos=videos, pagination=pagination, page=page, type=type)
