@@ -1,0 +1,40 @@
+<div class="input" style="width: 80%; margin: 0 auto; ">
+    <div class="input-group input-group-lg" style="margin-top: 30px; margin-bottom: 50px;">
+        {#        <div class="input-group-btn">#}
+        {#            <button type="button" id="search-type" class="btn btn-default dropdown-toggle"#}
+        {#                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 120px">#}
+        {#                标题&nbsp;&nbsp;<span class="caret"></span>#}
+        {#            </button>#}
+        {#            <ul class="dropdown-menu">#}
+        {#                <li><a href="javascript:void(0);" id="title">标题</a></li>#}
+        {#                <li role="separator" class="divider"></li>#}
+        {#                <li><a href="javascript:void(0);" id="author">作者</a></li>#}
+        {#            </ul>#}
+        {#        </div>#}
+
+        <input type="text" id="search-text" class="form-control">
+        <span class="input-group-btn">
+            <button id="hm-search" class="btn btn-primary" type="button" style="width: 120px">搜索</button>
+        </span>
+    </div>
+</div>
+<script>
+    function search_text(text) {
+        var url = '{{ url_for('main.search_video', page=1, keyword="") }}';
+        window.location.href = url.replace('//', '/' + text + '/');
+    }
+
+    $("#hm-search").click(
+        function () {
+            var text = $("#search-text").val();
+            search_text(text);
+        }
+    );
+
+    $("body").keydown(function () {
+        if (event.keyCode == "13") {
+            $('#hm-search').click();
+        }
+    });
+
+</script>
