@@ -70,7 +70,7 @@ def video_mark(video_id, page, status=1):
         {'_id': video_id},
         {'$set': {'read_status': 1}}
     )
-    return redirect(url_for('main.videos', page=page))
+    return redirect(url_for('main.videos', page=page, type='total'))
 
 
 @main.route('/')
