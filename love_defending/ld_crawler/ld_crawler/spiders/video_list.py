@@ -90,7 +90,7 @@ class VideoListSpider(Spider):
             item['total_views'] = self.str2num(i['thirdLine'])
             item['url'] = i['playUrl']
             item['date'] = datetime.datetime.strptime(title[0], '%Y-%m-%d')
-            item['views_per_day'] = int(item['total_views'] * 1. / (datetime.datetime.now() - item['date']).days + 1)
+            item['views_per_day'] = int(item['total_views'] * 1. / ((datetime.datetime.now() - item['date']).days + 1))
             if item['id'] not in self.video_ids:
                 yield Request(
                     item['url'],
