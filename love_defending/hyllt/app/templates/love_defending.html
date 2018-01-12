@@ -40,13 +40,13 @@
                                             {{ video.total_views }}
                                         </div>
                                         <div class="col-md-4 column" style="margin-top: 5px;">
-                                            <a href="{% if video.read_status == 0 %}
-{{ url_for('main.video_mark', video_id=video.id, page=page, status=1) }}
-{% else %}
+                                            <a href="{% if video.read_status == 1 %}
 {{ url_for('main.video_mark', video_id=video.id, page=page, status=0) }}
+{% else %}
+{{ url_for('main.video_mark', video_id=video.id, page=page, status=1) }}
 {% endif %}
 "
-                                               type="button" class="btn btn-{% if video.read_status == 0 %}primary{% else %}default{% endif %} btn-xs">标记</a>
+                                               type="button" class="btn btn-{% if video.read_status == 1 %}default{% else %}primary{% endif %} btn-xs">标记</a>
                                         </div>
                                     </div>
                                 </div>
