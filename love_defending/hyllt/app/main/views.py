@@ -71,7 +71,7 @@ def video_mark(video_id, page, status=1):
         flash("失败")
     mongodb.db['video_list'].update(
         {'_id': video_id},
-        {'$set': {'read_status': 1}}
+        {'$set': {'read_status': status}}
     )
     return redirect(url_for('main.videos', page=page, type='total'))
 
