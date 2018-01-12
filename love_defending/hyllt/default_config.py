@@ -12,6 +12,7 @@ class Config(object):
     HOST = '0.0.0.0'
     PORT = 2117
     SECRET_KEY = os.environ.get("LD_SECRET_KEY")
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
 
     @staticmethod
     def init_app(app):

@@ -9,6 +9,7 @@ import sys
 
 import math
 from flask import render_template, flash, redirect, url_for
+from flask_login import login_required
 
 from . import main
 from .. import mongodb
@@ -48,6 +49,7 @@ def generate_video_list(videos, page, pagesize=20):
 
 
 @main.route('/video/<type>/<page>')
+@login_required
 def videos(type='total', page=1):
     page = int(page)
     pagesize = 20
@@ -62,6 +64,7 @@ def videos(type='total', page=1):
 
 
 @main.route('/video/mark/<video_id>/<page>/<status>')
+@login_required
 def video_mark(video_id, page, status=1):
     status = int(status)
     if status != 0 and status != 1:
@@ -74,11 +77,13 @@ def video_mark(video_id, page, status=1):
 
 
 @main.route('/')
+@login_required
 def index():
     return render_template('index.html')
 
 
 @main.route('/video/<type>/<keyword>/<page>')
+@login_required
 def search_video(type='total', keyword='', page=1):
     page = int(page)
     pagesize = 20
