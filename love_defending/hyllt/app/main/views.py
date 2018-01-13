@@ -23,12 +23,21 @@ class Pagination(object):
         setattr(self, name, value)
 
 
+def num2str(num):
+    if num < 10000:
+        return num
+    if num < 100000000:
+        return str(round(num * 1. / 10000, 2)) + '万'
+    else:
+        return str(round(num * 1. / 100000000, 2)) + '亿'
+
+
 def generate_video_list(videos, page, pagesize=20):
     total_items = videos.count()
     videos_info = videos.skip((page - 1) * pagesize).limit(pagesize)
     videos = []
     for video in videos_info:
-        video['total_views'] = str(video['total_views'] / 10000) + u'万'
+        video['total_views'] = num2str(video['total_views'])
         video['full_title'] = video['title']
         video['title'] = video['title'][:14] + '…' if len(video['title']) > 14 else '{0:　<14}'.format(video['title'])
         videos.append(video)
@@ -69,10 +78,16 @@ def video_mark(video_id, page, status=1):
     status = int(status)
     if status != 0 and status != 1:
         flash("失败")
-    mongodb.db['video_list'].update(
-        {'_id': video_id},
-        {'$set': {'read_status': status}}
-    )
+    if status == 1:
+        mongodb.db['video_list'].update(
+            {'_id': video_id},
+            {'$set': {'read_status': status}}
+        )
+    else:
+        mongodb.db['video_list'].update(
+            {'_id': video_id},
+            {'$unset': {'read_status': 1}}
+        )
     return redirect(url_for('main.videos', page=page, type='total'))
 
 
