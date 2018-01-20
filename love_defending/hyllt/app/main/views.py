@@ -8,7 +8,7 @@ author @heyao
 import sys
 
 import math
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, request
 from flask_login import login_required
 
 from . import main
@@ -40,6 +40,7 @@ def generate_video_list(videos, page, pagesize=20):
         video['total_views'] = num2str(video['total_views'])
         video['full_title'] = video['title']
         video['title'] = video['title'][:14] + '…' if len(video['title']) > 14 else '{0:　<14}'.format(video['title'])
+        video['collect'] = video['collect'] if 'collect' in video else 0
         videos.append(video)
     pages = int(math.ceil(total_items * 1. / pagesize))
 
@@ -88,6 +89,19 @@ def video_mark(video_id, page, status=1):
             {'_id': video_id},
             {'$unset': {'read_status': 1}}
         )
+    return redirect(url_for('main.videos', page=page, type='total'))
+
+
+@main.route('/video/collect/<video_id>/<page>/<status>')
+@login_required
+def video_collect(video_id, page, status=1):
+    status = int(status)
+    if status != 0 and status != 1:
+        flash("失败")
+    mongodb.db['video_list'].update(
+        {'_id': video_id},
+        {'$set': {'collect': status}}
+    )
     return redirect(url_for('main.videos', page=page, type='total'))
 
 
