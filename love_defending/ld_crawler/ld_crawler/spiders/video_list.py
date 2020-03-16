@@ -19,7 +19,7 @@ class VideoListSpider(Spider):
 
     @staticmethod
     def generate_date_list():
-        id_list = [34965, 34961, 34980, 34996, 34986, 44887, 54192, 73047, 81798]
+        id_list = [34965, 34961, 34980, 34996, 34986, 44887, 54192, 73047, 81798, 86060]
         start_year = 2011
         start_month = 6
         today = datetime.datetime.now()
